@@ -19,8 +19,8 @@
         android:name="com.example.chilli.profile.profileFragment"
         android:label="profileFragment" />
     <fragment
-        android:id="@+id/broadcashFragment"
-        android:name="com.example.chilli.broadcash.broadcashFragment"
+        android:id="@+id/broadcastFragment"
+        android:name="com.example.chilli.broadcash.broadcastFragment"
         android:label="fragment_broadcash"
-        tools:layout="@layout/fragment_broadcash" />
+        tools:layout="@layout/fragment_broadcast" />
 </navigation>
