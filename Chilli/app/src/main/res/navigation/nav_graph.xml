@@ -16,7 +16,7 @@
         tools:layout="@layout/fragment_kalender" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.chilli.profile.profileFragment"
+        android:name="com.example.chilli.profile.ProfileFragment"
         android:label="profileFragment" />
     <fragment
         android:id="@+id/broadcastFragment"

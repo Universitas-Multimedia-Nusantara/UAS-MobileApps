@@ -4,10 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="profileViewModel"
+            type="com.example.chilli.profile.ProfileViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Profile">
+        tools:context=".profile.ProfileFragment">
 
     <TextView
         android:id="@+id/namaLengkap"
@@ -18,6 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="10dp"
+        android:text="@{profileViewModel.name}"
         />
 
     <TextView
@@ -29,6 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/namaLengkap"
         android:layout_margin="10dp"
+        android:text="@{profileViewModel.nickname}"
         />
 
     <TextView
@@ -40,6 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/namaPanggilan"
         android:layout_margin="10dp"
+        android:text="@{profileViewModel.email}"
         />
 
         <Button
