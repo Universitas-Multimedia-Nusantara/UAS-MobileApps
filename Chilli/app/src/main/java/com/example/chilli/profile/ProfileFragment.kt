@@ -40,16 +40,14 @@ class ProfileFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
         val dataSource = AppDatabase.getInstance(application).userDao
-//        val profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
-//        val profileViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application))[ProfileViewModel::class.java]
-//        val application = requireActivity().application
         val factory = ProfileViewModelFactory(auth?.currentUser?.uid!!,dataSource, application)
         val profileViewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
-        loadProfile()
+        profileViewModel.startCollectingData()
 
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.profileViewModel = profileViewModel
 
+        loadProfile()
         return binding.root
     }
 

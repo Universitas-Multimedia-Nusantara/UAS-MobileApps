@@ -2,9 +2,13 @@ package com.example.chilli.database
 
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
+
 import androidx.room.TypeConverters
+import com.example.chilli.profile.ProfileFragment
+import com.google.firebase.firestore.Exclude
+import com.google.firebase.firestore.IgnoreExtraProperties
 
 @Entity(tableName = "BroadcastMessages")
 data class BroadcastMessage(
@@ -37,13 +41,13 @@ data class Group(
 
 @Entity(tableName = "User")
 data class User(
-    @PrimaryKey val userId: String,
-    val email: String,
-    val foto: String?,
+    @PrimaryKey
+    var userId: String,
+    val email: String = "",
+    val foto: String? = null,
     @TypeConverters(Converter::class)
-    val group: List<String>?,
-    val name: String,
-    val nickName: String
+    val group: List<String>? = null,
+    val name: String = "",
+    val nickName: String = ""
 )
-
 

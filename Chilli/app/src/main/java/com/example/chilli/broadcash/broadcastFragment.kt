@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.chilli.database.AppDatabase
 import com.example.chilli.databinding.FragmentBroadcastBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 
-public class broadcastFragment : Fragment() {
+class broadcastFragment : Fragment() {
     private lateinit var binding: FragmentBroadcastBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var groupRecyclerView : RecyclerView
@@ -35,6 +37,14 @@ public class broadcastFragment : Fragment() {
         broadCastList = arrayListOf()
         adapter = broadCastAdapter(broadCastList)
         recyclerView.adapter = adapter
+
+//        val application = requireNotNull(this.activity).application
+//        val dataSource = AppDatabase.getInstance(application).broadcastMessageDao
+//        val dataSource2 = AppDatabase.getInstance(application).groupDao
+//        val factory = broadcastViewModelFactory(dataSource, dataSource2, application)
+//        val profileViewModel = ViewModelProvider(this, factory)[broadcastViewModel::class.java]
+//        binding.lifecycleOwner = this.viewLifecycleOwner
+//        binding.broadcastViewModel = profileViewModel
 
         val listGroup = arrayListOf("grup1", "grup2", "grup3")
 
@@ -67,7 +77,7 @@ public class broadcastFragment : Fragment() {
                                 for (broadcastDocument in broadcastSnapshot.documents) {
                                     val title = broadcastDocument.getString("title")
                                     val body = broadcastDocument.getString("body")
-                                    val time = broadcastDocument.getTimestamp("time")
+                                    val time = broadcastDocument.getTimestamp("timestamp")
 
                                     broadCastList.add(broadcast(title, body, time))
                                 }

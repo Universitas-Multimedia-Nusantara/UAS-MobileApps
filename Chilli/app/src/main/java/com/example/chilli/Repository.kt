@@ -4,8 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chilli.database.*
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SnapshotMetadata
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -21,13 +26,31 @@ class Repository(
     private val groupCollection: CollectionReference = firestore.collection("Group")
     private val messagesCollection: CollectionReference = firestore.collection("BroadcastMessages")
 
+    private lateinit var user: DocumentSnapshot
+
     fun syncUser(userId: String) {
         viewModelScope.launch {
             try {
+//                observeUserData(userId)
                 val userSnapshot = userCollection.document(userId).get().await()
-                userSnapshot.toObject(User::class.java)?.let { user ->
+                userCollection.document(userId).addSnapshotListener { snapshot, exception ->
+                    if (exception != null) {
+                        return@addSnapshotListener
+                    }
+                    if (snapshot != null && snapshot.exists()) {
+                        snapshot.data?.let { user ->
+                            viewModelScope.launch {
+                                setUser(user, userId)
+                            }
+                        }
+                    }
+                }
 
-                    setUser(user, userId)
+
+//                userSnapshot.toObject(User::class.java)?.let { user ->
+//                    setUser(user, userId)
+//                }
+
                     val groupIDs = userSnapshot.get("group") as? List<String>
                     for (groupID in groupIDs!!) {
                         val groupSnapshot = groupCollection.document(groupID).get().await()
@@ -47,7 +70,7 @@ class Repository(
                             }
                         }
                     }
-                }
+
             } catch (e: Exception) {
                 Log.d("Repository", "Error: ${e.message}")
                 // Handle the exception here (e.g., display an error message)
@@ -55,15 +78,25 @@ class Repository(
         }
     }
 
-    private suspend fun setUser(user: User, userId:String) {
+    private suspend fun setUser(userMap: Map<String, Any>, userId: String) {
         withContext(Dispatchers.IO) {
             try {
-                val userWithId = user.copy(userId = userId)
-//                Log.d("username:","${user.getString("name")}")
-//                val createUser = User(userId, user?.getString("email")!!, user?.getString("foto")!!, user.get("group") as? List<String>, user?.getString("name")!!, user?.getString("nickName")!! )
-                userDao.insertUser(userWithId)
+                val email = userMap["email"] as? String ?: ""
+                val foto = userMap["foto"] as? String
+                val group = userMap["group"] as? List<String>
+                val name = userMap["name"] as? String ?: ""
+                val nickName = userMap["nickName"] as? String ?: ""
+
+                val user = User(userId, email, foto, group, name, nickName)
+
+                val existingUser = userDao.getAllUsers(userId)
+                if (existingUser != null) {
+                    userDao.updateUser(user)
+                }else {
+                    userDao.insertUser(user)
+                }
             } catch (e: Exception) {
-                Log.d("error","${e.message}")
+                Log.d("error", "${e.message}")
             }
         }
     }

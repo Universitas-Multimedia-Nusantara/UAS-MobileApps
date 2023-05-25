@@ -28,7 +28,7 @@ class broadCastAdapter(private  val broadCashList: ArrayList<broadcast>) : Recyc
         val broadcast : broadcast = broadCashList[position]
         holder.title.text = broadcast.title
         holder.body.text = broadcast.body
-        holder.time.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(broadcast.jam?.toDate()).toString()
+        holder.time.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(broadcast.timestamp!!.toDate()).toString()
     }
 
     override fun getItemCount(): Int {

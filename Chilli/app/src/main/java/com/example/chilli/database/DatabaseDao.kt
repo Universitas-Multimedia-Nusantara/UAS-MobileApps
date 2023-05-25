@@ -1,17 +1,14 @@
 package com.example.chilli.database
 
 import android.provider.ContactsContract.CommonDataKinds.Nickname
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BroadcastMessageDao {
     @Query("SELECT * FROM BroadcastMessages")
-    fun getAllBroadcastMessages(): Flow<BroadcastMessage>
+    fun getAllBroadcastMessages(): Flow<List<BroadcastMessage>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertBroadcastMessage(broadcastMessage: BroadcastMessage)
@@ -20,7 +17,7 @@ interface BroadcastMessageDao {
 @Dao
 interface MessagesDao {
     @Query("SELECT * FROM Messages ORDER BY timestamp DESC")
-    fun getAllMessages(): Flow<Messages>
+    fun getAllMessages(): Flow<List<Messages>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMessage(message: Messages)
@@ -29,7 +26,7 @@ interface MessagesDao {
 @Dao
 interface GroupDao {
     @Query("SELECT * FROM `Group`")
-    fun getAllGroups(): Flow<Group>
+    fun getAllGroups(): Flow<List<Group>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
      fun insertGroup(group: Group)
@@ -39,9 +36,13 @@ interface GroupDao {
 interface UserDao {
     @Transaction
     @Query("SELECT * FROM User WHERE userId = :userId")
-    fun getAllUsers(userId: String): User?
+    fun getAllUsers(userId: String): Flow<User>
 
     @Insert
     fun insertUser(user: User)
+
+    @Update
+    fun updateUser(user: User)
+
 }
 
