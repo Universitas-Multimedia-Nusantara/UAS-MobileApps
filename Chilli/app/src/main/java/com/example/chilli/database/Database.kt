@@ -8,8 +8,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [User::class, Messages::class, BroadcastMessage::class, Group::class], version = 1, exportSchema = false)
-@TypeConverters(Converter::class, userConverter::class)
+@Database(entities = [User::class, Messages::class, BroadcastMessage::class, Group::class], version = 2, exportSchema = false)
+@TypeConverters(Converter::class, userConverter::class, TimestampConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val messagesDao: MessagesDao
@@ -27,7 +27,7 @@ abstract class AppDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "database_chilli"
+                        "database_chilli2"
                     ).fallbackToDestructiveMigration().build()
                     INSTANCE = instance
                 }

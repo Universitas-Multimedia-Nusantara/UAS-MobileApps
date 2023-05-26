@@ -8,7 +8,15 @@
         android:id="@+id/homeFragment"
         android:name="com.example.chilli.home.homeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addOrganisasiFragment"
+            app:destination="@id/addOrganisasiFragment"
+            app:launchSingleTop="false" />
+        <action
+            android:id="@+id/action_homeFragment_to_searchGroupFragment"
+            app:destination="@id/searchGroupFragment" />
+    </fragment>
     <fragment
         android:id="@+id/kalenderFragment"
         android:name="com.example.chilli.kalender.kalenderFragment"
@@ -23,4 +31,22 @@
         android:name="com.example.chilli.broadcash.broadcastFragment"
         android:label="fragment_broadcash"
         tools:layout="@layout/fragment_broadcast" />
+    <fragment
+        android:id="@+id/addOrganisasiFragment"
+        android:name="com.example.chilli.addOrganisasi.addOrganisasiFragment"
+        android:label="fragment_add_organisasi"
+        tools:layout="@layout/fragment_add_organisasi" >
+        <action
+            android:id="@+id/action_addOrganisasiFragment_to_homeFragment2"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchGroupFragment"
+        android:name="com.example.chilli.SearchGroup.SearchGroupFragment"
+        android:label="fragment_search_group"
+        tools:layout="@layout/fragment_search_group" >
+        <action
+            android:id="@+id/action_searchGroupFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>

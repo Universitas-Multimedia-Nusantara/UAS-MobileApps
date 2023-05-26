@@ -2,13 +2,11 @@ package com.example.chilli.database
 
 
 import androidx.room.Entity
-import androidx.room.Ignore
+
 import androidx.room.PrimaryKey
 
 import androidx.room.TypeConverters
-import com.example.chilli.profile.ProfileFragment
-import com.google.firebase.firestore.Exclude
-import com.google.firebase.firestore.IgnoreExtraProperties
+
 
 @Entity(tableName = "BroadcastMessages")
 data class BroadcastMessage(
@@ -23,7 +21,8 @@ data class Messages(
     val title: String,
     val files: String?,
     val pinTime: String,
-    val timestamp: String,
+    @TypeConverters(TimestampConverter::class)
+    val timestamp: Long,
     val sender: String,
     val body: String
 )
@@ -43,11 +42,11 @@ data class Group(
 data class User(
     @PrimaryKey
     var userId: String,
-    val email: String = "",
-    val foto: String? = null,
+    val email: String,
+    val foto: String?,
     @TypeConverters(Converter::class)
-    val group: List<String>? = null,
-    val name: String = "",
-    val nickName: String = ""
+    val group: List<String>?,
+    val name: String,
+    val nickName: String
 )
 

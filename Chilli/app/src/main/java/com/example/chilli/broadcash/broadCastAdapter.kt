@@ -4,14 +4,15 @@ import android.view.View
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chilli.R
+import com.example.chilli.database.Messages
 import java.text.SimpleDateFormat
 import com.example.chilli.databinding.BroadcastCardBinding
 import java.util.*
-import kotlin.collections.ArrayList
 
-class broadCastAdapter(private  val broadCashList: ArrayList<broadcast>) : RecyclerView.Adapter<broadCastAdapter.MyViewHolder>() {
+class broadCastAdapter(private val broadCashList: MutableLiveData<List<Messages>>) : RecyclerView.Adapter<broadCastAdapter.MyViewHolder>() {
 
     lateinit var binding: BroadcastCardBinding
 
@@ -25,15 +26,13 @@ class broadCastAdapter(private  val broadCashList: ArrayList<broadcast>) : Recyc
     }
 
     override fun onBindViewHolder(holder: broadCastAdapter.MyViewHolder, position: Int) {
-        val broadcast : broadcast = broadCashList[position]
+        val broadcast : Messages = broadCashList.value!![position]
         holder.title.text = broadcast.title
         holder.body.text = broadcast.body
-        holder.time.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(broadcast.timestamp!!.toDate()).toString()
+        holder.time.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(broadcast.timestamp).toString()
     }
 
-    override fun getItemCount(): Int {
-        return broadCashList.size
-    }
+    override fun getItemCount(): Int = broadCashList.value?.size ?: 0
 
     public class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val title: TextView = itemView.findViewById(R.id.title)

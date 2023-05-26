@@ -36,9 +36,9 @@ interface GroupDao {
 interface UserDao {
     @Transaction
     @Query("SELECT * FROM User WHERE userId = :userId")
-    fun getAllUsers(userId: String): Flow<User>
+    fun getUser(userId: String):Flow<User>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User)
 
     @Update

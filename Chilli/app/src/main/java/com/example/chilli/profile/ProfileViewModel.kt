@@ -18,28 +18,56 @@ class ProfileViewModel(private val userId: String, private val database: UserDao
     val name: MutableLiveData<String> = MutableLiveData()
     val nickname: MutableLiveData<String> = MutableLiveData()
     val email: MutableLiveData<String> = MutableLiveData()
-    val updatedDataFlow: Flow<User> = database.getAllUsers(userId)
+    private val updatedDataFlow: Flow<User> = database.getUser(userId)
 
     init {
         startCollectingData()
     }
 
+//    fun startCollectingData() {
+//        viewModelScope.launch {
+//            withContext(Dispatchers.IO) {
+//                updatedDataFlow.collect { userData ->
+//                    Log.d("data", "${userData}")
+//                    name.value = userData?.name
+//                    nickname.value = userData?.nickName
+//                    email.value = userData?.email
+//                    Log.d("Profile", "Name: ${name.value}")
+//                    Log.d("Profile", "Nickname: ${nickname.value}")
+//                    Log.d("Profile", "Email: ${email.value}")
+//                }
+//
+//            }
+////            updatedDataFlow.collect { userData ->
+////                Log.d("data", "${userData}")
+////                name.value = userData?.name
+////                nickname.value = userData?.nickName
+////                email.value = userData?.email
+////                Log.d("Profile", "Name: ${name.value}")
+////                Log.d("Profile", "Nickname: ${nickname.value}")
+////                Log.d("Profile", "Email: ${email.value}")
+////            }
+//
+//
+//        }
+//    }
+
     fun startCollectingData() {
         viewModelScope.launch {
-            updatedDataFlow.collect { userData ->
-                name.value = userData?.name
-                nickname.value = userData?.nickName
-                email.value = userData?.email
-                Log.d("Profile", "Name: ${name.value}")
-                Log.d("Profile", "Nickname: ${nickname.value}")
-                Log.d("Profile", "Email: ${email.value}")
+            withContext(Dispatchers.IO) {
+                updatedDataFlow.collect { userData ->
+                    withContext(Dispatchers.Main) {
+                        Log.d("data", "$userData")
+                        name.value = userData?.name
+                        nickname.value = userData?.nickName
+                        email.value = userData?.email
+                        Log.d("Profile", "Name: ${name.value}")
+                        Log.d("Profile", "Nickname: ${nickname.value}")
+                        Log.d("Profile", "Email: ${email.value}")
+                    }
+                }
             }
         }
     }
 
-    fun update(user:User){
-        name.value = user.name
-        nickname.value = user.nickName
-        email.value = user.email
-    }
 }

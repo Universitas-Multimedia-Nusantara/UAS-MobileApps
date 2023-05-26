@@ -2,6 +2,7 @@ package com.example.chilli.database
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.sql.Timestamp
 
 class Converter {
     @TypeConverter
@@ -27,3 +28,17 @@ class userConverter{
         return Gson().fromJson(json, type)
     }
 }
+
+class TimestampConverter {
+
+    @TypeConverter
+    fun fromTimestamp(timestamp: Timestamp): Long {
+        return timestamp.time
+    }
+
+    @TypeConverter
+    fun toTimestamp(value: Long): Timestamp {
+        return Timestamp(value)
+    }
+}
+

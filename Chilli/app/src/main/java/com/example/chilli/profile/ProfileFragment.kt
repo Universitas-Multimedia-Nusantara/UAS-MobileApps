@@ -31,14 +31,12 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         binding = FragmentProfileBinding.inflate(inflater)
 
         auth = FirebaseAuth.getInstance()
-//        database = FirebaseFirestore.getInstance()
-//        databaseRef = database?.collection("User")
 
-        val application = requireNotNull(this.activity).application
+        val application = requireNotNull(activity).application
         val dataSource = AppDatabase.getInstance(application).userDao
         val factory = ProfileViewModelFactory(auth?.currentUser?.uid!!,dataSource, application)
         val profileViewModel = ViewModelProvider(this, factory)[ProfileViewModel::class.java]
@@ -52,25 +50,6 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loadProfile(){
-
-//        val user = auth.currentUser
-//        val userRef = databaseRef?.document(user?.uid!!)
-//
-//        userRef?.get()?.addOnSuccessListener{documentSnapshot->
-//            if (documentSnapshot.exists()) {
-//                binding.namaLengkap.text = documentSnapshot.getString("name")
-//                binding.namaPanggilan.text = documentSnapshot.getString("nickName")
-//                binding.email.text = documentSnapshot.getString("email")
-//            } else {
-//                Toast.makeText(getActivity(), "data not found", Toast.LENGTH_LONG).show()
-//            }
-//        }?.addOnFailureListener { exception ->
-//            // Handle any errors
-//            Toast.makeText(getActivity(), "some errors", Toast.LENGTH_LONG).show()
-//        }
-
-
-
         binding.logoutButton.setOnClickListener{
             auth.signOut()
             startActivity(Intent(activity, LoginActivity::class.java))
