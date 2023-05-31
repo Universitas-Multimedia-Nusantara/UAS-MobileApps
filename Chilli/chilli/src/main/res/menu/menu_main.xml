@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.chilli.MainActivity">
+    <item android:id="@+id/homeFragment" android:title="Home"  android:icon="@drawable/home" />
+    <item android:id="@+id/broadcastFragment" android:title="Event"  android:icon="@drawable/home" />
+    <item android:id="@+id/kalenderFragment" android:title="Kalender" android:icon="@drawable/home" />
+    <item android:id="@+id/profileFragment" android:title="Profile"  android:icon="@drawable/home" />
+</menu>
