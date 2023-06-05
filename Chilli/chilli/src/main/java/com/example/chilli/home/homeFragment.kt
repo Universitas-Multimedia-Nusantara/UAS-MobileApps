@@ -4,11 +4,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chilli.R
+import com.example.chilli.broadcash.messageDetail.MessageDetailFragment
 import com.example.chilli.database.AppDatabase
 import com.example.chilli.database.Group
 import com.example.chilli.database.Messages
@@ -16,6 +18,8 @@ import com.example.chilli.databinding.FragmentHomeBinding
 import com.example.chilli.viewModel.GrupViewModel
 import com.example.chilli.viewModel.GrupViewModelFactory
 import com.example.chilli.kalender.eventKalenderAdapter
+import com.example.chilli.viewModel.getGroup
+import com.example.chilli.viewModel.getUser
 
 
 class homeFragment : Fragment(), GrupAdapter.OnItemClickListener {
@@ -36,12 +40,8 @@ class homeFragment : Fragment(), GrupAdapter.OnItemClickListener {
         binding.buttonSearchGroup.setOnClickListener{view: View->
             view.findNavController().navigate(R.id.searchGroupFragment)}
 
-
         val application = requireNotNull(activity).application
-        val dataSource = AppDatabase.getInstance(application).groupDao
-        val factory = GrupViewModelFactory(dataSource, application)
-        val ViewModel = ViewModelProvider(this, factory)[GrupViewModel::class.java]
-
+        val ViewModel = getGroup(this, application).ViewModel
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
@@ -62,12 +62,13 @@ class homeFragment : Fragment(), GrupAdapter.OnItemClickListener {
 //        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
-    override fun onItemClick(item: Group) {
-//        val bundle = Bundle().apply {
-//            putSerializable("idMessage", item)
-//        }
-//        val detailFragment = MessageDetailFragment()
-//        detailFragment.arguments = bundle
-        view?.findNavController()?.navigate(R.id.action_homeFragment_to_grupFragment)
+    override fun onItemClick(item: String) {
+        val bundle = Bundle().apply {
+            putString("idGroup", item)
+        }
+
+        val detailFragment = MessageDetailFragment()
+        detailFragment.arguments = bundle
+        view?.findNavController()?.navigate(R.id.action_homeFragment_to_grupFragment, bundle)
     }
 }

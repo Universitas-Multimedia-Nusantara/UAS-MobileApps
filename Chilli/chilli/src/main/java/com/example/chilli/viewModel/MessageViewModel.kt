@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.chilli.database.GroupDao
 import com.example.chilli.database.Messages
 import com.example.chilli.database.MessagesDao
 import kotlinx.coroutines.Dispatchers
@@ -17,16 +16,10 @@ class MessageViewModel(
     private val messageDao: MessagesDao,
     application: Application
 ) : AndroidViewModel(application) {
-
     val message: MutableLiveData<List<Messages>> = MutableLiveData()
     val updatedMessage: Flow<List<Messages>> by lazy() { messageDao.getAllMessages() }
-    val singleMessage: Flow<List<Messages>> by lazy() { messageDao.getAllMessages() }
 
-    init {
-        startCollectingData()
-    }
-
-
+    fun groupMessage(id: List<String>?): Flow<List<Messages>> = messageDao.getMessagesById(id)
     fun startCollectingData() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -34,6 +27,23 @@ class MessageViewModel(
                     Log.d("data message", "$data")
                     val broadcastList = data.toMutableList()
                     message.postValue(broadcastList)
+                }
+            }
+        }
+    }
+
+    fun getGroupData(groups: List<String>?) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val broadcastList = mutableListOf<Messages>()
+                if (groups != null) {
+                    groupMessage(groups).collect { data ->
+                        Log.d("groupMessage data", "$data")
+                        broadcastList.addAll(data)
+                        Log.d("data message semua", "$broadcastList")
+                        message.postValue(broadcastList)
+                    }
+
                 }
             }
         }

@@ -18,6 +18,7 @@ class UserViewModel(private val userId: String, private val database: UserDao, a
     val name: MutableLiveData<String> = MutableLiveData()
     val nickname: MutableLiveData<String> = MutableLiveData()
     val email: MutableLiveData<String> = MutableLiveData()
+    val group: MutableLiveData<List<String>> = MutableLiveData()
     private val updatedDataFlow: Flow<User> = database.getUser(userId)
 
     init {
@@ -28,10 +29,13 @@ class UserViewModel(private val userId: String, private val database: UserDao, a
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 updatedDataFlow.collect { data ->
-                    Log.d("data", "$data")
-                    name.postValue(data.name)
-                    nickname.postValue(data.nickName)
-                    email.postValue(data.nickName)
+                    data?.let{
+                        Log.d("data", "$data")
+                        name.postValue(data.name ?: null)
+                        nickname.postValue(data.nickName ?: null)
+                        email.postValue(data.nickName ?: null)
+                        group.postValue(data.group ?: null)
+                    }
                 }
             }
         }

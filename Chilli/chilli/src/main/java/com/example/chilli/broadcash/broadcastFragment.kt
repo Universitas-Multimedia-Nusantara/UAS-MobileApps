@@ -45,6 +45,7 @@ class broadcastFragment : Fragment(), broadCastAdapter.OnItemClickListener,
         val message = AppDatabase.getInstance(application).messagesDao
         val factory = MessageViewModelFactory(message, application)
         val ViewModel = ViewModelProvider(this, factory)[MessageViewModel::class.java]
+        ViewModel.startCollectingData()
 
         recyclerView = binding.recyclerView2
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -53,6 +54,7 @@ class broadcastFragment : Fragment(), broadCastAdapter.OnItemClickListener,
         adapter = broadCastAdapter(ViewModel.message)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener(this)
+
 
         ViewModel.message.observe(viewLifecycleOwner) {
             adapter.notifyDataSetChanged()

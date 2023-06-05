@@ -49,6 +49,8 @@ class kalenderFragment : Fragment(), eventKalenderAdapter.OnItemClickListener {
 
         binding.lifecycleOwner = this.viewLifecycleOwner
 
+        viewModel.startCollectingData()
+
         viewModel.message.observe(viewLifecycleOwner) { data ->
             filterDataByDate(data, today)
         }

@@ -64,6 +64,7 @@ class RegisActivity : AppCompatActivity() {
                            "email" to binding.emailInput.text.toString(),
                            "name" to binding.nameInput.text.toString(),
                            "nickName" to binding.nickNameInput.text.toString(),
+                           "group" to listOf<String>()
                        )
 
                         databaseRef?.document(user?.uid!!)?.set(data)!!

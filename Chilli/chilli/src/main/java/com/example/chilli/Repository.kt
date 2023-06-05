@@ -40,12 +40,22 @@ class Repository(
                         setUser(userData, userId)
 
 
+
                         val groupIDs = userData["group"] as? List<String> ?: emptyList()
+                        withContext(Dispatchers.IO) {
+                            groupDao.deleteAllNotUserGroup(groupIDs)
+                        }
+
                         Log.d("group", "$groupIDs")
                         for (groupID in groupIDs) {
                             syncGroup(groupID)
                             syncMessages(groupID)
                         }
+                    }
+                } else {
+                    // Document has been deleted, remove corresponding data
+                    viewModelScope.launch {
+                        removeUser(userId)
                     }
                 }
             }
@@ -62,6 +72,11 @@ class Repository(
                 viewModelScope.launch {
                     setGroup(groupData, groupID)
                 }
+            } else {
+                // Document has been deleted, remove corresponding data
+                viewModelScope.launch {
+                    removeGroup(groupID)
+                }
             }
         }
     }
@@ -77,7 +92,11 @@ class Repository(
                     for (messagesDocument in messageDocuments) {
                         if (messagesDocument != null) {
                             viewModelScope.launch {
-                                setMessages(messagesDocument.data, messagesDocument.id)
+                                if (messagesDocument.exists()) {
+                                    setMessages(messagesDocument.data, messagesDocument.id)
+                                } else {
+                                    deleteMessage(messagesDocument.id)
+                                }
                             }
                         }
                     }
@@ -90,11 +109,10 @@ class Repository(
     }
 
 
-
     private suspend fun setUser(userMap: Map<String, Any>?, userId: String) {
         withContext(Dispatchers.IO) {
             try {
-                Log.d("set", "${ userMap}")
+                Log.d("set", "${userMap}")
                 val email = userMap?.get("email") as String
                 val foto = userMap.get("foto") as String
                 val group = userMap.get("group") as List<String>
@@ -103,20 +121,10 @@ class Repository(
 
                 val user = User(userId, email, foto, group, name, nickName)
 
-//                data class User(
-//                    @PrimaryKey
-//                    var userId: String,
-//                    val email: String,
-//                    val foto: String?,
-//                    @TypeConverters(Converter::class)
-//                    val group: List<String>?,
-//                    val name: String,
-//                    val nickName: String
-//                )
                 Log.d("adawe", "$user")
 
-                    Log.d("Masuk insert", "Masuk")
-                    userDao.insertUser(user)
+                Log.d("Masuk insert", "Masuk")
+                userDao.insertUser(user)
 
             } catch (e: Exception) {
                 Log.d("error", "${e.message}")
@@ -127,7 +135,7 @@ class Repository(
     private suspend fun setGroup(group: Map<String, Any>?, groupId: String) {
         withContext(Dispatchers.IO) {
             try {
-                Log.d("group","$group")
+                Log.d("group", "$group")
                 val deskripsi = group?.get("deskripsi") as? String ?: ""
                 val foto = group?.get("foto") as? String ?: ""
                 val nama = group?.get("nama") as? String ?: ""
@@ -142,7 +150,7 @@ class Repository(
 
     private suspend fun setMessages(messages: MutableMap<String, Any>?, id: String) {
         withContext(Dispatchers.IO) {
-            try{
+            try {
                 Log.d("ada cok", "$messages")
                 val body = messages?.get("body") as? String ?: ""
                 val files = messages?.get("files") as? String ?: ""
@@ -154,15 +162,50 @@ class Repository(
                 val msg = Messages(id, title, files, pinTime, timestamp, sender, body)
                 Log.d("msg", "$msg")
                 messagesDao.insertMessage(msg)
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 // Handle the exception here
             }
         }
     }
 
+
+
+    private suspend fun removeUser(userId: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                userDao.deleteUserById(userId)
+                // Remove any other related data if needed
+            } catch (e: Exception) {
+                Log.d("removeUser", "Error: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun removeGroup(groupId: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                groupDao.deleteGroupById(groupId)
+                // Remove any other related data if needed
+            } catch (e: Exception) {
+                Log.d("removeGroup", "Error: ${e.message}")
+            }
+        }
+    }
+
+    private suspend fun deleteMessage(messageId: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                messagesDao.deleteMessageById(messageId)
+                // Handle any other related data removal if needed
+            } catch (e: Exception) {
+                Log.d("deleteMessage", "Error: ${e.message}")
+            }
+        }
+    }
+
+
     suspend fun insertBroadcastMessage(broadcastMessage: BroadcastMessage) {
         withContext(Dispatchers.IO) {
-
             try {
                 Log.d("ada", "$broadcastMessage")
                 broadcastDao.insertBroadcastMessage(broadcastMessage)
@@ -177,5 +220,5 @@ class Repository(
             Timestamp(firestoreTimestamp.toDate().time)
         } else null
     }
-
 }
+

@@ -20,7 +20,7 @@ class GrupAdapter(private val groupList: MutableLiveData<List<Group>>) : Recycle
     private var itemClickListener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(item: Group)
+        fun onItemClick(item: String)
     }
 
     fun setOnItemClickListener(listener: homeFragment) {
@@ -42,7 +42,7 @@ class GrupAdapter(private val groupList: MutableLiveData<List<Group>>) : Recycle
         bindImage(holder.image, group.foto)
 
         holder.itemView.setOnClickListener {
-            itemClickListener?.onItemClick(group)
+            itemClickListener?.onItemClick(group.groupId)
         }
     }
 

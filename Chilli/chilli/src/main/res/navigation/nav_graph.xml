@@ -66,12 +66,21 @@
         android:name="com.example.chilli.grup.grupFragment"
         android:label="fragment_grup"
         tools:layout="@layout/fragment_grup" >
+        <argument
+            android:name="idGroup"
+            app:argType="string" />
         <action
             android:id="@+id/action_grupFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
         <action
             android:id="@+id/action_grupFragment_to_messageDetailFragment"
             app:destination="@id/messageDetailFragment" />
+        <action
+            android:id="@+id/action_grupFragment_to_idGroupFragment"
+            app:destination="@id/idGroupFragment" />
+        <action
+            android:id="@+id/action_grupFragment_to_inserMessageFragment"
+            app:destination="@id/inserMessageFragment" />
     </fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
@@ -81,5 +90,26 @@
         <argument
             android:name="idMessage"
             app:argType="com.example.chilli.database.Messages" />
+    </fragment>
+    <fragment
+        android:id="@+id/idGroupFragment"
+        android:name="com.example.chilli.addOrganisasi.IdGroupFragment"
+        android:label="fragment_id_group"
+        tools:layout="@layout/fragment_id_group" >
+        <argument
+            android:name="idGroup"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_idGroupFragment_to_grupFragment"
+            app:destination="@id/grupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/inserMessageFragment"
+        android:name="com.example.chilli.insertMessage.InserMessageFragment"
+        android:label="fragment_inser_message"
+        tools:layout="@layout/fragment_inser_message" >
+        <argument
+            android:name="idGroup"
+            app:argType="string" />
     </fragment>
 </navigation>

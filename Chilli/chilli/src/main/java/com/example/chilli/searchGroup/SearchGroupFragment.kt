@@ -1,5 +1,6 @@
 package com.example.chilli.searchGroup
 
+import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,9 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.example.chilli.databinding.FragmentSearchGroupBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 class SearchGroupFragment : Fragment() {
     private lateinit var codeScanner: CodeScanner
@@ -54,6 +58,7 @@ class SearchGroupFragment : Fragment() {
             decodeCallback = DecodeCallback {
                 requireActivity().runOnUiThread {
                     binding.tvTextView.text = it.text
+                    ViewGroup(it.text)
                 }
             }
 
@@ -67,6 +72,42 @@ class SearchGroupFragment : Fragment() {
         binding.scannerView.setOnClickListener {
             codeScanner.startPreview()
         }
+    }
+
+    fun ViewGroup(id: String){
+        val progress = ProgressDialog(requireActivity()).apply {
+            setTitle("Upload File...")
+            show()
+        }
+        val db = FirebaseFirestore.getInstance()
+        val user = db.collection("User")
+        val group = db.collection("Group")
+        val groupRef = group.document(id)
+        val documentRef = user.document(FirebaseAuth.getInstance().currentUser?.uid!!)
+
+        val data = hashMapOf(
+            "type" to "member",
+            "userId" to FirebaseAuth.getInstance().currentUser?.uid!!
+        )
+        documentRef.update("group", FieldValue.arrayUnion(id))
+            .addOnSuccessListener {
+                progress.dismiss()
+                Toast.makeText(this.activity, "Success upload", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                progress.dismiss()
+                Toast.makeText(this.activity, "Failed Uploaded", Toast.LENGTH_SHORT).show()
+            }
+
+        groupRef.update("user", FieldValue.arrayUnion(data))
+            .addOnSuccessListener {
+                progress.dismiss()
+                Toast.makeText(this.activity, "Success upload", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { exception ->
+                progress.dismiss()
+                Toast.makeText(this.activity, "Failed Uploaded", Toast.LENGTH_SHORT).show()
+            }
     }
 
     override fun onResume() {

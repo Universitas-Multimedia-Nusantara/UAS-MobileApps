@@ -41,14 +41,17 @@ class broadCastAdapter(private val broadCashList: MutableLiveData<List<Messages>
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val broadcast : Messages = broadCashList.value!![position]
-        holder.title.text = broadcast.title
-        holder.body.text = broadcast.body
-        holder.time.text = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(broadcast.timestamp).toString()
-
-        holder.itemView.setOnClickListener { itemClickListener?.onItemClick(broadcast) }
+        val broadcast : Messages? = broadCashList.value?.getOrNull(position)
+        if (broadcast != null) {
+            holder.title.text = broadcast.title ?: ""
+            holder.body.text = broadcast.body
+            holder.time.text = SimpleDateFormat(
+                "yyyy-MM-dd HH:mm:ss",
+                Locale.getDefault()
+            ).format(broadcast.timestamp).toString()
+            holder.itemView.setOnClickListener { itemClickListener?.onItemClick(broadcast) }
+        }
     }
-
     override fun getItemCount(): Int = broadCashList.value?.size ?: 0
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
@@ -56,5 +59,4 @@ class broadCastAdapter(private val broadCashList: MutableLiveData<List<Messages>
         val body: TextView = itemView.findViewById(R.id.body)
         val time: TextView = itemView.findViewById(R.id.time)
     }
-
 }
