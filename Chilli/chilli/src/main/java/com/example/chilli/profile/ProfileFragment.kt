@@ -35,17 +35,18 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentProfileBinding.inflate(inflater)
-
+        auth = FirebaseAuth.getInstance()
         val application = requireNotNull(activity).application
         val userViewModel = getUser(this, application).userViewModel
         binding.lifecycleOwner = this.viewLifecycleOwner
         binding.userViewModel = userViewModel
 
         loadProfile()
+
         return binding.root
     }
+
 
     private fun loadProfile(){
         binding.logoutButton.setOnClickListener{

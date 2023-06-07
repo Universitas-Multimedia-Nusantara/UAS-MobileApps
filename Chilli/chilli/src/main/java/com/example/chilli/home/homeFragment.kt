@@ -56,6 +56,9 @@ class homeFragment : Fragment(), GrupAdapter.OnItemClickListener {
             groupAdapter.notifyDataSetChanged()
         }
 
+        val user = getUser(this, application).userViewModel.name.value
+        binding.textView3.text = "Hello "+user
+
 
 
         return binding.root

@@ -3,7 +3,6 @@ package com.example.chilli.insertMessage
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,11 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
+import androidx.navigation.findNavController
+import com.example.chilli.R
 import com.example.chilli.databinding.FragmentInserMessageBinding
-import com.example.chilli.viewModel.Firebase
+import com.example.chilli.viewModel.getFirebase
 import com.example.chilli.viewModel.getUser
 import com.google.firebase.firestore.FieldValue
-import java.text.SimpleDateFormat
 import java.util.*
 
 class InserMessageFragment : Fragment() {
@@ -24,22 +24,24 @@ class InserMessageFragment : Fragment() {
     private lateinit var timePickerDialog: TimePickerDialog
     private lateinit var selectedTime: String
     private lateinit var selectedDate: String
+    private var havePinTime: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val id = (arguments?.getString("idGroup") as? String).toString()
-        Log.d("item","$id")
 
         binding = FragmentInserMessageBinding.inflate(inflater)
 
         initDatePicker()
         binding.checkBox.setOnClickListener{
             if(binding.checkBox.isChecked){
+                havePinTime = true
                 binding.datePickerButton.visibility = View.VISIBLE
                 binding.timePickerButton.visibility = View.VISIBLE
             }else{
+                havePinTime = false
                 binding.datePickerButton.visibility = View.GONE
                 binding.timePickerButton.visibility = View.GONE
             }
@@ -83,7 +85,9 @@ class InserMessageFragment : Fragment() {
         val dateSetListener = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
             val date = makeDateString(day, month + 1, year)
             binding.datePickerButton.text = date
-            selectedDate = "$year-${month+1}-$day"
+            val formatMonth = if(month+1 < 10) "0$month" else month+1
+            val formatDay = if(day < 10) "0$day" else day
+            selectedDate = "$year-${formatMonth}-$formatDay"
         }
 
         val cal: Calendar = Calendar.getInstance()
@@ -115,6 +119,7 @@ class InserMessageFragment : Fragment() {
 
 
     private fun makeDateString(day: Int, month: Int, year: Int): String{
+
         return getMonthFormat(month) + " " + day + " " + year
     }
 
@@ -135,19 +140,24 @@ class InserMessageFragment : Fragment() {
         }
     }
 
-
     private fun insertMessage(id:String){
-        val dateTimeString = "$selectedDate $selectedTime"
-        val dateFormated = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).parse(dateTimeString)
+        binding.loadingView.visibility = View.VISIBLE
+        var dateFormated = if(havePinTime) "$selectedDate $selectedTime" else ""
+
         val data = hashMapOf(
-            "sender" to getUser(this,  requireNotNull(activity).application).userViewModel.name.toString(),
+            "sender" to getUser(this,  requireNotNull(activity).application).userViewModel.name.value.toString(),
             "timestamp" to FieldValue.serverTimestamp(),
             "title" to binding.inputTitleText.text.toString(),
             "body" to binding.inputBodyText.text.toString(),
-            "pinTime" to dateFormated
+            "pinTime" to dateFormated,
+            "files" to null
         )
-        Firebase().messagesCollection.document(id).collection("Messages").document().set(data).addOnSuccessListener{
 
+        getFirebase().messagesCollection.document(id).collection("Messages").document().set(data).addOnSuccessListener{
+            binding.loadingView.visibility = View.GONE
         }
+
+        view?.findNavController()?.navigate(R.id.action_inserMessageFragment_to_homeFragment)
+
     }
 }

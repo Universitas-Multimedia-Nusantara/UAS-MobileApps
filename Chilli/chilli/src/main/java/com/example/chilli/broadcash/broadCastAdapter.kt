@@ -10,13 +10,12 @@ import com.example.chilli.R
 import com.example.chilli.database.Messages
 import java.text.SimpleDateFormat
 import com.example.chilli.databinding.BroadcastCardBinding
-import com.example.chilli.grup.grupFragment
-import com.example.chilli.kalender.eventKalenderAdapter
+import com.example.chilli.grup.GrupFragment
 import java.util.*
 
 class broadCastAdapter(private val broadCashList: MutableLiveData<List<Messages>>) : RecyclerView.Adapter<broadCastAdapter.MyViewHolder>() {
 
-    private var itemClickListener: eventKalenderAdapter.OnItemClickListener? = null
+    private var itemClickListener: broadCastAdapter.OnItemClickListener? = null
 
     interface OnItemClickListener {
         fun onItemClick(item: Messages)
@@ -25,7 +24,7 @@ class broadCastAdapter(private val broadCashList: MutableLiveData<List<Messages>
         itemClickListener = listener
     }
 
-    fun setOnItemClickListener2(listener: grupFragment) {
+    fun setOnItemClickListener2(listener: GrupFragment) {
         itemClickListener = listener
     }
 
@@ -44,15 +43,20 @@ class broadCastAdapter(private val broadCashList: MutableLiveData<List<Messages>
         val broadcast : Messages? = broadCashList.value?.getOrNull(position)
         if (broadcast != null) {
             holder.title.text = broadcast.title ?: ""
-            holder.body.text = broadcast.body
+            val cutString = if (broadcast.body?.length!! > 30) broadcast.body?.substring(0, 30)+"..." else broadcast.body
+            holder.body.text = cutString
             holder.time.text = SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss",
+                "dd MMMM yyyy HH:mm",
                 Locale.getDefault()
             ).format(broadcast.timestamp).toString()
             holder.itemView.setOnClickListener { itemClickListener?.onItemClick(broadcast) }
         }
     }
     override fun getItemCount(): Int = broadCashList.value?.size ?: 0
+
+    fun submitList(list:  List<Messages>){
+        broadCashList.value = list
+    }
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val title: TextView = itemView.findViewById(R.id.title)

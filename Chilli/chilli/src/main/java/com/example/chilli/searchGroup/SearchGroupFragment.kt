@@ -11,11 +11,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
+import com.example.chilli.R
 import com.example.chilli.databinding.FragmentSearchGroupBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -92,7 +94,7 @@ class SearchGroupFragment : Fragment() {
         documentRef.update("group", FieldValue.arrayUnion(id))
             .addOnSuccessListener {
                 progress.dismiss()
-                Toast.makeText(this.activity, "Success upload", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this.activity, "Success upload", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { exception ->
                 progress.dismiss()
@@ -102,12 +104,14 @@ class SearchGroupFragment : Fragment() {
         groupRef.update("user", FieldValue.arrayUnion(data))
             .addOnSuccessListener {
                 progress.dismiss()
-                Toast.makeText(this.activity, "Success upload", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this.activity, "Success upload", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { exception ->
                 progress.dismiss()
                 Toast.makeText(this.activity, "Failed Uploaded", Toast.LENGTH_SHORT).show()
             }
+
+        view?.findNavController()?.navigate(R.id.action_searchGroupFragment_to_homeFragment2)
     }
 
     override fun onResume() {

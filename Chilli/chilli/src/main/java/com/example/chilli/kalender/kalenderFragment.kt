@@ -1,6 +1,11 @@
 package com.example.chilli.kalender
 
+import android.graphics.*
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.service.autofill.CustomDescription
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +22,9 @@ import com.example.chilli.database.Messages
 import com.example.chilli.databinding.FragmentKalenderBinding
 import com.example.chilli.viewModel.MessageViewModel
 import com.example.chilli.viewModel.MessageViewModelFactory
+import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.DayViewDecorator
+import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,7 +39,7 @@ class kalenderFragment : Fragment(), eventKalenderAdapter.OnItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentKalenderBinding.inflate(inflater)
         today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
@@ -55,19 +63,34 @@ class kalenderFragment : Fragment(), eventKalenderAdapter.OnItemClickListener {
             filterDataByDate(data, today)
         }
 
-        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+//        val datePin = data.value?.map { SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(it.pinTime).toString() }
+        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             val selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
                 GregorianCalendar(year, month, dayOfMonth).time
             )
+
             today = selectedDate
             filterDataByDate(viewModel.message.value ?: emptyList(), selectedDate)
         }
+
+//        if (datePin != null) {
+//            binding.calendarView.setColoredDates(datePin)
+//        }
+
         return binding.root
     }
 
+
     private fun filterDataByDate(messages: List<Messages>, selectedDate: String) {
         val filteredData = messages.filter {
-            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(it.pinTime).toString() == selectedDate
+            if (it.pinTime != "") {
+                val formattedPinTime = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(it.pinTime).toString()
+                val selectedDateFormated = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(selectedDate).toString()
+                formattedPinTime == selectedDateFormated
+
+            } else {
+                false
+            }
         }
         data.value = filteredData
         adapter.setData(filteredData)
@@ -82,4 +105,6 @@ class kalenderFragment : Fragment(), eventKalenderAdapter.OnItemClickListener {
         detailFragment.arguments = bundle
         view?.findNavController()?.navigate(R.id.action_kalenderFragment_to_messageDetailFragment, bundle)
     }
+
+
 }

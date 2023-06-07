@@ -38,12 +38,19 @@ class GrupAdapter(private val groupList: MutableLiveData<List<Group>>) : Recycle
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val group : Group = groupList.value!![position]
         holder.groupName.text = group.nama
-        holder.groupDesc.text = group.deskripsi
+        holder.groupDesc.text = if (group.deskripsi.length > 50) {
+            group.deskripsi.substring(0, 50) + "..."
+        } else {
+            group.deskripsi
+        }
+
         bindImage(holder.image, group.foto)
 
-        holder.itemView.setOnClickListener {
-            itemClickListener?.onItemClick(group.groupId)
-        }
+       if (group.groupId != null) {
+           holder.itemView.setOnClickListener {
+               itemClickListener?.onItemClick(group.groupId)
+           }
+       }
     }
 
     override fun getItemCount(): Int = groupList.value?.size ?: 0

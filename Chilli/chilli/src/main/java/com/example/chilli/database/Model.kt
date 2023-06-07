@@ -25,7 +25,7 @@ data class Messages(
     val title: String,
     val files: String?,
     @TypeConverters
-    val pinTime: Timestamp?,
+    val pinTime: String?,
     @TypeConverters(TimestampConverter::class)
     val timestamp: Timestamp?,
     val sender: String?,
@@ -38,8 +38,8 @@ data class Group(
     val deskripsi: String,
     val foto: String?,
     val nama: String,
-    @TypeConverters(userConverter::class)
-    val user: List<Map<String, String>>?
+    @TypeConverters(UserConverter::class)
+    var user: List<Map<String, String>>?
 )
 
 
@@ -48,9 +48,9 @@ data class User(
     @PrimaryKey
     var userId: String,
     val email: String,
-    val foto: String?,
+    val foto: String? = null,
     @TypeConverters(Converter::class)
-    val group: List<String>?,
+    var group: List<String>? = null,
     val name: String,
     val nickName: String
 )

@@ -3,6 +3,7 @@ package com.example.chilli
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.view.View
 import android.widget.Toast
 import com.example.chilli.databinding.ActivityRegisBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -11,10 +12,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisActivity : AppCompatActivity() {
 
-    lateinit var auth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     lateinit var binding: ActivityRegisBinding
     var database: FirebaseFirestore? = null
-    var databaseRef: CollectionReference? = null
+    private var databaseRef: CollectionReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,60 +29,80 @@ class RegisActivity : AppCompatActivity() {
         register()
     }
 
-    private fun register(){
-
+    private fun register() {
         var error = false
 
-        binding.regisButton.setOnClickListener{
-            if( TextUtils.isEmpty(binding.nameInput.text.toString())){
+        binding.regisButton.setOnClickListener {
+            if (TextUtils.isEmpty(binding.nameInput.text.toString())) {
                 binding.nameInput.error = "Please enter first name"
                 error = true
             }
 
-            if(TextUtils.isEmpty(binding.nickNameInput.text.toString())){
+            if (TextUtils.isEmpty(binding.nickNameInput.text.toString())) {
                 binding.nickNameInput.error = "Please enter nickname"
                 error = true
             }
 
-            if(TextUtils.isEmpty(binding.emailInput.text.toString())){
+            if (TextUtils.isEmpty(binding.emailInput.text.toString())) {
                 binding.emailInput.error = "Please enter email"
                 error = true
             }
 
-            if(TextUtils.isEmpty(binding.passInput.text.toString())){
+            if (TextUtils.isEmpty(binding.passInput.text.toString())) {
                 binding.passInput.error = "Please enter password"
+                error = true
+            } else if (!isPasswordValid(binding.passInput.text.toString())) {
+                binding.passInput.error = "Password must contain at least 6 characters, 1 number, and 1 uppercase letter"
                 error = true
             }
 
-            if(error) return@setOnClickListener
+            if (error) return@setOnClickListener
 
-            auth.createUserWithEmailAndPassword(binding.emailInput.text.toString(), binding.passInput.text.toString())
-                .addOnCompleteListener{
-                    val user = auth.currentUser
+            binding.loadingView.visibility = View.VISIBLE
 
-                    if(it.isSuccessful){
-                       val data = hashMapOf(
-                           "email" to binding.emailInput.text.toString(),
-                           "name" to binding.nameInput.text.toString(),
-                           "nickName" to binding.nickNameInput.text.toString(),
-                           "group" to listOf<String>()
-                       )
+            auth.createUserWithEmailAndPassword(
+                binding.emailInput.text.toString(),
+                binding.passInput.text.toString()
+            ).addOnCompleteListener { task ->
+                val user = auth.currentUser
 
-                        databaseRef?.document(user?.uid!!)?.set(data)!!
-                            .addOnSuccessListener {
-                                finish()
-                            }
-                            .addOnFailureListener { exception ->
-                                Toast.makeText(this@RegisActivity, "Registration failed, please try again", Toast.LENGTH_LONG)
-                            }
+                if (task.isSuccessful) {
 
-//                        Toast.makeText(this@RegisActivity, "Registration Success", Toast.LENGTH_LONG)
+                    val data = hashMapOf(
+                        "foto" to null,
+                        "email" to binding.emailInput.text.toString(),
+                        "name" to binding.nameInput.text.toString(),
+                        "nickName" to binding.nickNameInput.text.toString(),
+                        "group" to listOf<String>()
+                    )
 
-                    }else{
-                        Toast.makeText(this@RegisActivity, "Registration failed, please try again", Toast.LENGTH_LONG)
-                    }
+                    databaseRef?.document(user?.uid!!)?.set(data)!!
+                        .addOnSuccessListener {
+                            binding.loadingView.visibility = View.GONE
+                            finish()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(
+                                this@RegisActivity,
+                                "Registration failed, please try again",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
+                } else {
+                    Toast.makeText(
+                        this@RegisActivity,
+                        "Registration failed, please try again",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-
+            }
         }
     }
+
+    private fun isPasswordValid(password: String): Boolean {
+        val passwordRegex = "^(?=.*[A-Z])(?=.*[0-9]).{6,}$".toRegex()
+        return passwordRegex.matches(password)
+    }
+
 }

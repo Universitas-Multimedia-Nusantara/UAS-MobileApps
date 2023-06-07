@@ -16,7 +16,7 @@ class Converter {
     }
 }
 
-class userConverter{
+class UserConverter{
     @TypeConverter
     fun fromListToJson(list: List<Map<String, String>>?): String? {
         return Gson().toJson(list)

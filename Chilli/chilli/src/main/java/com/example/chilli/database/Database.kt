@@ -8,8 +8,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [User::class, Messages::class, BroadcastMessage::class, Group::class], version = 5, exportSchema = false)
-@TypeConverters(Converter::class, userConverter::class, TimestampConverter::class)
+@Database(entities = [User::class, Messages::class, BroadcastMessage::class, Group::class], version = 7, exportSchema = false)
+@TypeConverters(Converter::class, UserConverter::class, TimestampConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract val userDao: UserDao
     abstract val messagesDao: MessagesDao

@@ -1,6 +1,14 @@
 package com.example.chilli
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chilli.database.*
@@ -14,6 +22,7 @@ import java.sql.Timestamp
 import com.google.firebase.Timestamp as Timestamp2
 
 class Repository(
+    private val context: Context,
     private val firestore: FirebaseFirestore,
     private val broadcastDao: BroadcastMessageDao,
     private val messagesDao: MessagesDao,
@@ -38,8 +47,6 @@ class Repository(
                     viewModelScope.launch {
                         Log.d("user", "$userData")
                         setUser(userData, userId)
-
-
 
                         val groupIDs = userData["group"] as? List<String> ?: emptyList()
                         withContext(Dispatchers.IO) {
@@ -89,6 +96,13 @@ class Repository(
                     val messageIds = messageDocuments.mapNotNull { it.id }
                     val broadcastMessage = BroadcastMessage(groupID, messageIds)
 
+//                    viewModelScope.launch {
+//                        withContext(Dispatchers.IO) {
+//                            messagesDao.deleteAllNotMessage(messageIds)
+//                        }
+//                    }
+
+
                     for (messagesDocument in messageDocuments) {
                         if (messagesDocument != null) {
                             viewModelScope.launch {
@@ -109,15 +123,18 @@ class Repository(
     }
 
 
-    private suspend fun setUser(userMap: Map<String, Any>?, userId: String) {
+    suspend fun setUser(userMap: Map<String, Any>?, userId: String) {
         withContext(Dispatchers.IO) {
             try {
                 Log.d("set", "${userMap}")
                 val email = userMap?.get("email") as String
-                val foto = userMap.get("foto") as String
+
+                val foto = userMap.get("foto") as String? ?: null
+                Log.d("adawe", "$email")
                 val group = userMap.get("group") as List<String>
                 val name = userMap.get("name") as String
                 val nickName = userMap.get("nickName") as String
+
 
                 val user = User(userId, email, foto, group, name, nickName)
 
@@ -154,14 +171,24 @@ class Repository(
                 Log.d("ada cok", "$messages")
                 val body = messages?.get("body") as? String ?: ""
                 val files = messages?.get("files") as? String ?: ""
-                val pinTime = convertTimestampToSqlTimestamp(messages?.get("pinTime") as? Timestamp2?)
+                val pinTime = messages?.get("pinTime") as? String ?: ""
                 val sender = messages?.get("sender") as? String ?: ""
                 val timestamp = convertTimestampToSqlTimestamp(messages?.get("timestamp") as Timestamp2)
                 val title = messages.get("title") as? String ?: ""
                 Log.d("tanggal", "${timestamp}")
                 val msg = Messages(id, title, files, pinTime, timestamp, sender, body)
                 Log.d("msg", "$msg")
+
+                val isNewMessage = messagesDao.getMessagesBySigleId(id)
+
                 messagesDao.insertMessage(msg)
+
+                if (isNewMessage == null) {
+                    // Show notification for new message
+                    if (timestamp != null) {
+                        showNewMessageNotification( title, body, timestamp)
+                    }
+                }
             } catch (e: Exception) {
                 // Handle the exception here
             }
@@ -220,5 +247,49 @@ class Repository(
             Timestamp(firestoreTimestamp.toDate().time)
         } else null
     }
+
+    private fun showNewMessageNotification(title: String, body: String, timestamp: Timestamp) {
+        val channelId = "chilli_notification_channel"
+        val notificationId = 1
+
+        val currentTime = System.currentTimeMillis()
+        val messageTime = timestamp.time
+
+        val timeDifferenceMinutes = (currentTime - messageTime) / (1000 * 60)
+
+        if (timeDifferenceMinutes <= 5) {
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            val pendingIntent = PendingIntent.getActivity(
+                context,
+                1,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+            )
+
+            // Create a notification builder
+            val builder = NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(title)
+                .setContentText(body)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+
+            // Show the notification
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channel = NotificationChannel(
+                    channelId,
+                    "New Message",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+                notificationManager.createNotificationChannel(channel)
+            }
+            notificationManager.notify(notificationId, builder.build())
+        }
+    }
+
 }
 

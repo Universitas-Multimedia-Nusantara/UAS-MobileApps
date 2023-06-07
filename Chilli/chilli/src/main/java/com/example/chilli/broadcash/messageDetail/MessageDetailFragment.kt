@@ -23,7 +23,6 @@ class MessageDetailFragment : Fragment() {
         binding = FragmentMessageDetailBinding.inflate(inflater)
 
         val item = arguments?.getSerializable("idMessage") as? Messages
-        Log.d("item","$item")
         binding.body.text = item?.body
         binding.title.text = item?.title
         binding.timestamp.text = item?.timestamp.toString()

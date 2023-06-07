@@ -60,10 +60,13 @@
         <action
             android:id="@+id/action_searchGroupFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_searchGroupFragment_to_homeFragment2"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/grupFragment"
-        android:name="com.example.chilli.grup.grupFragment"
+        android:name="com.example.chilli.grup.GrupFragment"
         android:label="fragment_grup"
         tools:layout="@layout/fragment_grup" >
         <argument
@@ -81,6 +84,9 @@
         <action
             android:id="@+id/action_grupFragment_to_inserMessageFragment"
             app:destination="@id/inserMessageFragment" />
+        <action
+            android:id="@+id/action_grupFragment_to_groupDetailFragment"
+            app:destination="@id/groupDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
@@ -111,5 +117,20 @@
         <argument
             android:name="idGroup"
             app:argType="string" />
+        <action
+            android:id="@+id/action_inserMessageFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupDetailFragment"
+        android:name="com.example.chilli.grup.GroupDetailFragment"
+        android:label="fragment_group_user"
+        tools:layout="@layout/fragment_group_user" >
+        <argument
+            android:name="idGroup"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_groupDetailFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

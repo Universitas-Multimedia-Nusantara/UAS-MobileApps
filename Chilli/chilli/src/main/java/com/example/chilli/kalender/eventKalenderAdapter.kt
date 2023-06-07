@@ -32,8 +32,11 @@ class eventKalenderAdapter(private var eventList: List<Messages>?) :
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val event: Messages = eventList?.get(position)!!
         holder.title.text = event.title
+        val parsedDate = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).parse(event.pinTime)
+
+
         holder.time.text =
-            SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(event.timestamp).toString()
+            SimpleDateFormat("HH:mm", Locale.getDefault()).format(parsedDate)?.toString()
 
         holder.itemView.setOnClickListener {
             itemClickListener?.onItemClick(event)

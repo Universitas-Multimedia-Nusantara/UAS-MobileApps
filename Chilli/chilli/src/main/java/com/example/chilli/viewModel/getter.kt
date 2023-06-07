@@ -7,14 +7,12 @@ import com.example.chilli.database.AppDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 val auth = FirebaseAuth.getInstance()
 
-class Firebase(){
+class getFirebase(){
     val firestore = FirebaseFirestore.getInstance()
+    val auth = FirebaseAuth.getInstance()
     val userCollection: CollectionReference = firestore.collection("User")
     val groupCollection: CollectionReference = firestore.collection("Group")
     val messagesCollection: CollectionReference = firestore.collection("BroadcastMessages")
@@ -22,7 +20,7 @@ class Firebase(){
 
 class getUser(context: ViewModelStoreOwner, application: Application) {
     val dataSource = AppDatabase.getInstance(application).userDao
-    val factory = UserViewModelFactory(auth.currentUser?.uid!!,dataSource, application)
+    val factory = UserViewModelFactory(auth.uid!!,dataSource, application)
     val userViewModel = ViewModelProvider(context, factory)[UserViewModel::class.java]
 }
 

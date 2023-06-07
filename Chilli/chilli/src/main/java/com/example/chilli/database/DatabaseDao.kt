@@ -21,11 +21,18 @@ interface MessagesDao {
     @Query("SELECT * FROM Messages WHERE messageId IN (:ids) ORDER BY timestamp DESC")
     fun getMessagesById(ids: List<String>?): Flow<List<Messages>>
 
+    @Query("SELECT * FROM Messages WHERE messageId = :ids ORDER BY timestamp DESC")
+    fun getMessagesBySigleId(ids: String): Flow<List<Messages>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMessage(message: Messages)
 
     @Query("DELETE FROM Messages WHERE messageId = :messageId")
     fun deleteMessageById(messageId: String)
+
+    @Query("DELETE FROM Messages WHERE messageId NOT IN(:messageIds)")
+    fun deleteAllNotMessage(messageIds: List<String>)
+
 }
 
 @Dao

@@ -1,42 +1,65 @@
-//package com.example.chilli.grup
-//
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import android.widget.TextView
-//import androidx.lifecycle.MutableLiveData
-//import androidx.recyclerview.widget.RecyclerView
-//import com.example.chilli.R
-//import com.example.chilli.database.Group
-//import com.example.chilli.database.Messages
-//import com.example.chilli.databinding.BroadcastCardBinding
-//import java.util.*
-//
-//class GrupDetailAdapter(private val groupList: MutableLiveData<List<Group>>) : RecyclerView.Adapter<GrupDetailAdapter.MyViewHolder>() {
-//    lateinit var binding: BroadcastCardBinding
-//
-//    override fun onCreateViewHolder(
-//        parent: ViewGroup,
-//        viewType: Int
-//    ): GrupDetailAdapter.MyViewHolder {
-//        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.broadcast_card,parent, false)
-//
-//        return MyViewHolder(itemView)
-//    }
-//
-//
-//    override fun onBindViewHolder(holder: GrupDetailAdapter.MyViewHolder, position: Int) {
-//        val group : Group = groupList.value!![position]
-//        holder.foto = group.foto
-//        holder.nama = group.nama
-//        holder.deskripsi = group.deskripsi
-//    }
-//
-//    override fun getItemCount(): Int = groupList.value?.size ?: 0
-//
-//    public class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-//        val title: TextView = itemView.findViewById(R.id.title)
-//        val body: TextView = itemView.findViewById(R.id.body)
-//        val time: TextView = itemView.findViewById(R.id.time)
-//    }
-//}
+package com.example.chilli.grup
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.net.toUri
+import androidx.databinding.BindingAdapter
+import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import com.example.chilli.R
+import com.example.chilli.database.Group
+import com.example.chilli.database.User
+import com.google.android.play.core.integrity.p
+import java.util.*
+
+class GrupDetailAdapter(private var userType:List<Map<String, String>>, private var groupList: List<User>?) : RecyclerView.Adapter<GrupDetailAdapter.MyViewHolder>() {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): GrupDetailAdapter.MyViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.group,parent, false)
+
+        return MyViewHolder(itemView)
+    }
+    override fun onBindViewHolder(holder: GrupDetailAdapter.MyViewHolder, position: Int) {
+        val user : User = groupList!![position]
+        holder.userName.text = user.name
+
+        val type: String = if (userType.any { it["userId"] == user.userId && it["type"] == "admin" }) {
+            "admin"
+        } else {
+            ""
+        }
+
+        holder.type.text = type
+        bindImage(holder.foto, user.foto)
+    }
+
+    override fun getItemCount(): Int = groupList?.size ?: 0
+
+    public class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val foto:ImageView = itemView.findViewById(R.id.group_image)
+        val userName: TextView = itemView.findViewById(R.id.group_title)
+        val type: TextView = itemView.findViewById(R.id.group_deskripsi)
+    }
+
+    @BindingAdapter("imageUrl")
+    fun bindImage(imageView: ImageView, imgUrl: String?){
+        imgUrl?.let{
+            val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
+            imageView.load(imgUri)
+        }
+    }
+
+    fun updateGroupData(maps: List<Map<String, String>>) {
+        userType = maps
+    }
+
+    fun updateUserData(userList: MutableList<User>) {
+        groupList = userList
+    }
+}

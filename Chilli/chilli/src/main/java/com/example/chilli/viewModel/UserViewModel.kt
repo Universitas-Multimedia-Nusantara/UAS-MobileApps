@@ -33,7 +33,7 @@ class UserViewModel(private val userId: String, private val database: UserDao, a
                         Log.d("data", "$data")
                         name.postValue(data.name ?: null)
                         nickname.postValue(data.nickName ?: null)
-                        email.postValue(data.nickName ?: null)
+                        email.postValue(data.email ?: null)
                         group.postValue(data.group ?: null)
                     }
                 }

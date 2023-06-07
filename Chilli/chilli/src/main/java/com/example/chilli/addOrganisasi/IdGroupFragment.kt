@@ -12,9 +12,6 @@ import com.example.chilli.databinding.FragmentIdGroupBinding
 
 class IdGroupFragment : Fragment() {
     private lateinit var binding: FragmentIdGroupBinding
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -25,7 +22,6 @@ class IdGroupFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val id = (arguments?.getString("idGroup") as? String).toString()
-        Log.d("item","$id")
 
         binding = FragmentIdGroupBinding.inflate(inflater)
 
