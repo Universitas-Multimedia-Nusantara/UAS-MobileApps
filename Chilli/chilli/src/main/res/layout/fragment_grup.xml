@@ -34,7 +34,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView6">
 
             <FrameLayout
-                android:layout_width="60dp"
+                android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:background="@drawable/box_border_radius"
@@ -99,39 +99,39 @@
                     android:textStyle="bold" />
             </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/userButton"
-                android:layout_width="60dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/box_border_radius"
-                android:foregroundGravity="center"
-                app:layout_anchorGravity="center"
-                tools:layout_editor_absoluteX="155dp"
-                tools:layout_editor_absoluteY="315dp">
+<!--            <FrameLayout-->
+<!--                android:id="@+id/userButton"-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_height="80dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginRight="5dp"-->
+<!--                android:background="@drawable/box_border_radius"-->
+<!--                android:foregroundGravity="center"-->
+<!--                app:layout_anchorGravity="center"-->
+<!--                tools:layout_editor_absoluteX="155dp"-->
+<!--                tools:layout_editor_absoluteY="315dp">-->
 
-                <ImageButton
-                    android:id="@+id/show_user_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:background="#00FFFFFF"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/group_profile" />
+<!--                <ImageButton-->
+<!--                    android:id="@+id/show_user_button"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_margin="10dp"-->
+<!--                    android:background="#00FFFFFF"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    app:srcCompat="@drawable/group_profile" />-->
 
-                <TextView
-                    android:id="@+id/textViewUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:gravity="center"
-                    android:text="USER"
-                    android:textAlignment="center"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/textViewUser"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="bottom|center_horizontal"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="USER"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:textStyle="bold" />-->
+<!--            </FrameLayout>-->
 
             <FrameLayout
                 android:layout_width="70dp"

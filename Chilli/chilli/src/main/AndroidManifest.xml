@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.chilli">
+    package="id.ac.umn.chilli">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -30,7 +30,7 @@
         <activity
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            android:name="com.example.chilli.LoginActivity"
+            android:name="id.ac.umn.chilli.LoginActivity"
             android:exported="true"
             android:label="Chilli"
             android:theme="@style/Theme.Chilli.NoActionBar">
@@ -43,12 +43,12 @@
         <activity
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            android:name=".MainActivity"
+            android:name="id.ac.umn.chilli.MainActivity"
             android:exported="true" />
         <activity
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"
-            android:name=".RegisActivity"
+            android:name="id.ac.umn.chilli.RegisActivity"
             android:exported="true" />
     </application>
 </manifest>

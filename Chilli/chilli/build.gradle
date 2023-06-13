@@ -6,12 +6,13 @@ plugins {
 }
 
 android {
-    namespace 'com.example.chilli'
+    namespace 'id.ac.umn.chilli'
     compileSdk 33
 
+
     defaultConfig {
-        applicationId "com.example.chilli"
-        minSdk 24
+        applicationId "id.ac.umn.chilli"
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -26,6 +27,9 @@ android {
     }
 
     compileOptions {
+//        // Enable support for the new language APIs
+//        coreLibraryDesugaringEnabled true
+//
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -41,6 +45,13 @@ android {
 }
 
 dependencies {
+//    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.0'
+    // The view calendar library
+    implementation 'com.kizitonwose.calendar:view:2.3.0'
+
+    // The compose calendar library
+    implementation 'com.kizitonwose.calendar:compose:2.3.0'
+
 
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
 

@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "920548008704",
-    "project_id": "uas-mobile-eeb74",
-    "storage_bucket": "uas-mobile-eeb74.appspot.com"
+    "project_number": "325440654062",
+    "project_id": "chilli-9237b",
+    "storage_bucket": "chilli-9237b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:920548008704:android:a31d8037522a838e8549e5",
+        "mobilesdk_app_id": "1:325440654062:android:c32967069558ce257681ff",
         "android_client_info": {
-          "package_name": "com.example.uconnect"
+          "package_name": "id.ac.umn.chilli"
         }
       },
       "oauth_client": [
         {
-          "client_id": "920548008704-ek8pq0he81k7qfs6n69723252mferlbd.apps.googleusercontent.com",
+          "client_id": "325440654062-ivb4ub0anuakgoci745je3brkbb2scjo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA5MbbhAkn5cV7TSxj4dF1ZH07GARwK3IY"
+          "current_key": "AIzaSyD-dZSvFtSfcZg_k5ZrxnxjCfby4Jl90_I"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "920548008704-2rbpbcjhka5nnbfup4ko6jgl91pagmes.apps.googleusercontent.com",
+              "client_id": "325440654062-ivb4ub0anuakgoci745je3brkbb2scjo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

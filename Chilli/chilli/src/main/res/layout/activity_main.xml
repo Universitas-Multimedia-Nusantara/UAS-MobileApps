@@ -5,7 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.android.chilli.MainActivity">
+        tools:context=".MainActivity">
 
         <fragment
             android:id="@+id/host_fragment"

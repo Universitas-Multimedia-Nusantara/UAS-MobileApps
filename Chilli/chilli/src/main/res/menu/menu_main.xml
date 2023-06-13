@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.chilli.MainActivity">
+    tools:context="id.ac.umn.chilli.MainActivity">
     <item android:id="@+id/homeFragment" android:title="Home"  android:icon="@drawable/home" />
     <item android:id="@+id/broadcastFragment" android:title="Event"  android:icon="@drawable/broadcast_icon" />
     <item android:id="@+id/kalenderFragment" android:title="Kalender" android:icon="@drawable/calendar_icon" />

@@ -23,7 +23,7 @@
 
         <ImageButton
             android:id="@+id/prev_buton"
-            android:layout_width="40dp"
+            android:layout_width="20dp"
             android:layout_height="40dp"
             android:layout_weight="0"
             android:background="#00FFFFFF"
@@ -34,104 +34,136 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="Group Name"
+            android:text="Create Message"
             android:textSize="24sp" />
 
     </LinearLayout>
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/layout_input_title"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <LinearLayout
-            android:id="@+id/layout_input_title"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_title"
+            style="@style/Widget.Chilli.TextInputLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title"
+            android:orientation="vertical"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_title_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:orientation="vertical">
+            android:layout_weight="0"
+            android:text="Apakah anda ingin menambahkan pin pada kalender ?"
+            android:textColor="#000000" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_title"
-                style="@style/Widget.Chilli.TextInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Title"
-                android:orientation="vertical"
-                app:errorEnabled="true">
+        <Button
+            android:id="@+id/datePickerButton"
+            style="?android:spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="JAN 01 2023"
+            android:text="JAN 01 2023"
+            android:textColor="#000000"
+            android:textSize="24dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_input_title" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_title_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/timePickerButton"
+            style="?android:spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="JAN 01 2023"
+            android:text="JAN 01 2023"
+            android:textColor="#000000"
+            android:textSize="24dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_input_title" />
 
-            <CheckBox
-                android:id="@+id/checkBox"
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_input_title">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_body"
+            style="@style/Widget.Chilli.TextInputLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:hint="Message"
+            android:orientation="vertical"
+            android:textAlignment="textStart"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_body_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Apakah anda ingin menambahkan pin pada kalender ?"
-                android:textColor="#000000" />
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:textAlignment="viewStart" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/datePickerButton"
-                style="?android:spinnerStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="JAN 01 2023"
-                android:text="JAN 01 2023"
-                android:textColor="#000000"
-                android:textSize="24dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_input_title" />
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/input_body"-->
+<!--            style="@style/Widget.Chilli.TextInputLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:hint="Group Description"-->
+<!--            app:errorEnabled="true">-->
 
-            <Button
-                android:id="@+id/timePickerButton"
-                style="?android:spinnerStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="JAN 01 2023"
-                android:text="JAN 01 2023"
-                android:textColor="#000000"
-                android:textSize="24dp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_input_title" />
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/input_body_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_gravity="start"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="start" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+    </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_body"
-                style="@style/Widget.Chilli.TextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Group Description"
-                app:errorEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/input_body_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:layout_gravity="start"
-                    android:gravity="start" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/button_submit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Send Message" />
-        </LinearLayout>
-    </ScrollView>
+    <Button
+        android:id="@+id/button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/red"
+        android:text="Send Message"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <FrameLayout
         android:id="@+id/loadingView"

@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.chilli.home.homeFragment"
+        android:name="id.ac.umn.chilli.home.homeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/kalenderFragment"
-        android:name="com.example.chilli.kalender.kalenderFragment"
+        android:name="id.ac.umn.chilli.kalender.kalenderFragment"
         android:label="fragment_kalender"
         tools:layout="@layout/fragment_kalender" >
         <action
@@ -32,11 +32,11 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.chilli.profile.ProfileFragment"
+        android:name="id.ac.umn.chilli.profile.ProfileFragment"
         android:label="profileFragment" />
     <fragment
         android:id="@+id/broadcastFragment"
-        android:name="com.example.chilli.broadcash.broadcastFragment"
+        android:name="id.ac.umn.chilli.broadcash.broadcastFragment"
         android:label="fragment_broadcash"
         tools:layout="@layout/fragment_broadcast" >
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/addOrganisasiFragment"
-        android:name="com.example.chilli.addOrganisasi.addOrganisasiFragment"
+        android:name="id.ac.umn.chilli.addOrganisasi.addOrganisasiFragment"
         android:label="fragment_add_organisasi"
         tools:layout="@layout/fragment_add_organisasi" >
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchGroupFragment"
-        android:name="com.example.chilli.searchGroup.SearchGroupFragment"
+        android:name="id.ac.umn.chilli.searchGroup.SearchGroupFragment"
         android:label="fragment_search_group"
         tools:layout="@layout/fragment_search_group" >
         <action
@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/grupFragment"
-        android:name="com.example.chilli.grup.GrupFragment"
+        android:name="id.ac.umn.chilli.grup.GrupFragment"
         android:label="fragment_grup"
         tools:layout="@layout/fragment_grup" >
         <argument
@@ -90,16 +90,16 @@
     </fragment>
     <fragment
         android:id="@+id/messageDetailFragment"
-        android:name="com.example.chilli.broadcash.messageDetail.MessageDetailFragment"
+        android:name="id.ac.umn.chilli.broadcash.messageDetail.MessageDetailFragment"
         android:label="fragment_message_detail"
         tools:layout="@layout/fragment_message_detail" >
         <argument
             android:name="idMessage"
-            app:argType="com.example.chilli.database.Messages" />
+            app:argType="id.ac.umn.chilli.database.Messages" />
     </fragment>
     <fragment
         android:id="@+id/idGroupFragment"
-        android:name="com.example.chilli.addOrganisasi.IdGroupFragment"
+        android:name="id.ac.umn.chilli.addOrganisasi.IdGroupFragment"
         android:label="fragment_id_group"
         tools:layout="@layout/fragment_id_group" >
         <argument
@@ -111,7 +111,7 @@
     </fragment>
     <fragment
         android:id="@+id/inserMessageFragment"
-        android:name="com.example.chilli.insertMessage.InserMessageFragment"
+        android:name="id.ac.umn.chilli.insertMessage.InserMessageFragment"
         android:label="fragment_inser_message"
         tools:layout="@layout/fragment_inser_message" >
         <argument
@@ -123,7 +123,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
-        android:name="com.example.chilli.grup.GroupDetailFragment"
+        android:name="id.ac.umn.chilli.grup.GroupDetailFragment"
         android:label="fragment_group_user"
         tools:layout="@layout/fragment_group_user" >
         <argument
