@@ -9,4 +9,16 @@ Nama Kelompok
 
 
 Nama Aplikasi: Chilli 
+
+
 Link Google Playstore: https://play.google.com/store/apps/details?id=id.ac.umn.chilli
+
+
+Github Link:
+https://github.com/Koongh/UAS-MobileApps 
+
+
+
+Drive Video dan file:
+https://drive.google.com/drive/folders/12aOpzrE3WnrpkvcKi_KfxXd-JymxeaXR?usp=sharing
+
