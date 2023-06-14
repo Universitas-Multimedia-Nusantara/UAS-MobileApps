@@ -26,16 +26,17 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
             finish()
         }
-        login()
-    }
 
-    private fun login() {
         binding.linkRegis.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisActivity::class.java))
         }
 
+        binding.loginButton.setOnClickListener {login()}
+    }
+
+    private fun login() {
         var error = false
-        binding.loginButton.setOnClickListener {
+
             if (TextUtils.isEmpty(binding.emailInput.text.toString())) {
                 binding.emailInput.error = "Please enter username"
                 error = true
@@ -46,13 +47,15 @@ class LoginActivity : AppCompatActivity() {
                 error = true
             }
 
-            if (error) return@setOnClickListener
+            if (error) return
 
             // Show loading progress
             binding.loadingView.visibility = View.VISIBLE
 
+            var email = binding.emailInput.text.toString().replace("\\s".toRegex(), "") // Remove all whitespace
+
             auth.signInWithEmailAndPassword(
-                binding.emailInput.text.toString(),
+                email,
                 binding.passInput.text.toString()
             )
                 .addOnCompleteListener {
@@ -66,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.makeText(this@LoginActivity, "Login Failed", Toast.LENGTH_LONG).show()
                     }
                 }
-        }
+
     }
 
 }

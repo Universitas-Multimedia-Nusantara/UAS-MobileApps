@@ -26,13 +26,13 @@ class RegisActivity : AppCompatActivity() {
         database = FirebaseFirestore.getInstance()
         databaseRef = database?.collection("User")
 
-        register()
+        binding.regisButton.setOnClickListener {register()}
     }
 
     private fun register() {
         var error = false
 
-        binding.regisButton.setOnClickListener {
+
             if (TextUtils.isEmpty(binding.nameInput.text.toString())) {
                 binding.nameInput.error = "Please enter first name"
                 error = true
@@ -46,6 +46,9 @@ class RegisActivity : AppCompatActivity() {
             if (TextUtils.isEmpty(binding.emailInput.text.toString())) {
                 binding.emailInput.error = "Please enter email"
                 error = true
+            }else if(binding.emailInput.text.toString().contains(" ")){
+                binding.emailInput.error = "Email should not contain whitespace"
+                error = true
             }
 
             if (TextUtils.isEmpty(binding.passInput.text.toString())) {
@@ -56,7 +59,7 @@ class RegisActivity : AppCompatActivity() {
                 error = true
             }
 
-            if (error) return@setOnClickListener
+            if (error) return
 
             binding.loadingView.visibility = View.VISIBLE
 
@@ -67,11 +70,13 @@ class RegisActivity : AppCompatActivity() {
             ).addOnCompleteListener { task ->
                 val user = auth.currentUser
 
+                var email = binding.emailInput.text.toString().replace("\\s".toRegex(), "") // Remove all whitespace
+
                 if (task.isSuccessful) {
 
                     val data = hashMapOf(
                         "foto" to null,
-                        "email" to binding.emailInput.text.toString(),
+                        "email" to email,
                         "name" to binding.nameInput.text.toString(),
                         "nickName" to binding.nickNameInput.text.toString(),
                         "group" to listOf<String>()
@@ -100,7 +105,7 @@ class RegisActivity : AppCompatActivity() {
                     ).show()
                 }
             }
-        }
+
     }
 
     private fun isPasswordValid(password: String): Boolean {
