@@ -60,6 +60,7 @@ class RegisActivity : AppCompatActivity() {
 
             binding.loadingView.visibility = View.VISIBLE
 
+
             auth.createUserWithEmailAndPassword(
                 binding.emailInput.text.toString(),
                 binding.passInput.text.toString()
@@ -82,6 +83,7 @@ class RegisActivity : AppCompatActivity() {
                             finish()
                         }
                         .addOnFailureListener {
+                            binding.loadingView.visibility = View.GONE
                             Toast.makeText(
                                 this@RegisActivity,
                                 "Registration failed, please try again",
@@ -90,6 +92,7 @@ class RegisActivity : AppCompatActivity() {
                         }
 
                 } else {
+                    binding.loadingView.visibility = View.GONE
                     Toast.makeText(
                         this@RegisActivity,
                         "Registration failed, please try again",

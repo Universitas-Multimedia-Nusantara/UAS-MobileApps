@@ -8,8 +8,6 @@ plugins {
 android {
     namespace 'id.ac.umn.chilli'
     compileSdk 33
-
-
     defaultConfig {
         applicationId "id.ac.umn.chilli"
         minSdk 26
