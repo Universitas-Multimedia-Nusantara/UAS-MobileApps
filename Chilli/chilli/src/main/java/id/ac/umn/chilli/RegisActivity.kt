@@ -32,7 +32,6 @@ class RegisActivity : AppCompatActivity() {
     private fun register() {
         var error = false
 
-
             if (TextUtils.isEmpty(binding.nameInput.text.toString())) {
                 binding.nameInput.error = "Please enter first name"
                 error = true

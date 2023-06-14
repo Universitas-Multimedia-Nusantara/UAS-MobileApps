@@ -199,7 +199,7 @@ class GrupFragment : Fragment(), broadCastAdapter.OnItemClickListener{
                         if (userId != null) {
                             userFB.document(userId).get().addOnSuccessListener { userDoc ->
                                 val email = userDoc?.get("email") as String
-                                val foto = userDoc.get("foto") as String ?: null
+                                val foto = userDoc.get("foto") as String? ?: ""
                                 val group = userDoc.get("group") as List<String>
                                 val name = userDoc.get("name") as String
                                 val nickName = userDoc.get("nickName") as String
